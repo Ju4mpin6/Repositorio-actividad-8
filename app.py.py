@@ -15,11 +15,11 @@ import os
 import kagglehub
 import streamlit as st
 
-# Configuración inicial de la página de Streamlit
-st.set_page_config(page_title="Dashboard de Sueldos Federales", layout="wide")
+
+st.set_page_config(page_title="Dashboard de sueldos federales", layout="wide")
 
 st.title("Dashboard de los sueldos Mexicanos")
-st.markdown("Dashboard que tiene como proposito ")
+
 
 
 @st.cache_data
@@ -67,8 +67,8 @@ st.dataframe(df_f, use_container_width=True)
 st.header("Estadísticas Descriptivas")
 col1, col2, col3 = st.columns(3)
 col1.metric("Media Sueldo Neto", f"${df_f['montoneto'].mean():,.2f}")
-col2.metric("Máximo Sueldo Neto", f"${df_f['montoneto'].max():,.2f}", f"${df_f['montoneto'].max() - df_orig['montoneto'].max():,.2f} vs Orig")
-col3.metric("Sueldo Bruto Promedio", f"${df_f['montobruto'].mean():,.2f}", f"${df_f['montobruto'].mean() - df_orig['montobruto'].mean():,.2f} vs Orig")
+col2.metric("Máximo Sueldo Neto", f"${df_f['montoneto'].max():,.2f}")
+col3.metric("Sueldo Bruto Promedio", f"${df_f['montobruto'].mean():,.2f}")
 
 
 st.header("Gráficos Dinámicos")
@@ -81,12 +81,12 @@ else:
     with c1:
         fig, ax = plt.subplots()
         sns.histplot(df_f['montoneto'], kde=True, ax=ax, color='skyblue')
-        st.subheader("G1: Distribución del Monto Neto")
+        st.subheader(" Distribución del Monto Neto")
         st.pyplot(fig)
     with c2:
         fig, ax = plt.subplots()
         sns.scatterplot(data=df_f, x='montobruto', y='montoneto', ax=ax, color='purple', alpha=0.7)
-        st.subheader("G2: Monto Neto vs Monto Bruto")
+        st.subheader(" Monto Neto vs Monto Bruto")
         st.pyplot(fig)
 
 
@@ -95,13 +95,13 @@ else:
         fig, ax = plt.subplots()
         top_sujetos = df_f.groupby('sujetoobligado')['montoneto'].mean().sort_values(ascending=False).head(5)
         sns.barplot(x=top_sujetos.values, y=top_sujetos.index, ax=ax, palette='viridis')
-        st.subheader("G3: Top 5 Sujetos con Mayor Sueldo Promedio")
+        st.subheader(" Top 5 Sujetos con Mayor Sueldo Promedio")
         st.pyplot(fig)
     with c4:
         fig, ax = plt.subplots()
-        sns.boxenplot(data=df_f, x='entidadfederativa', y='montoneto', ax=ax) # Boxenplot es más limpio visualmente
+        sns.boxenplot(data=df_f, x='entidadfederativa', y='montoneto', ax=ax) 
         plt.xticks(rotation=45, ha='right')
-        st.subheader("G4: Comparativo de Sueldo Neto por Entidad")
+        st.subheader(" Comparativo de ueldo neto por entidad")
         st.pyplot(fig)
 
 
@@ -111,11 +111,11 @@ else:
         counts = df_f['entidadfederativa'].value_counts()
         if not counts.empty:
             ax.pie(counts, labels=counts.index, autopct='%1.1f%%', startangle=90, colors=sns.color_palette('pastel'))
-        st.subheader("G5: Proporción por Entidad Federativa")
+        st.subheader(" Proporción por entidad federativa")
         st.pyplot(fig)
     with c6:
         fig, ax = plt.subplots()
         top_areas = df_f['area'].value_counts().head(5)
         sns.countplot(data=df_f[df_f['area'].isin(top_areas.index)], y='area', ax=ax, order=top_areas.index, palette='magma')
-        st.subheader("G6: Relación de Sueldo Neto por Tipo de Área (Top 5)")
+        st.subheader(" Relación de sueldo neto por tipo de area solo el top 5")
         st.pyplot(fig)
