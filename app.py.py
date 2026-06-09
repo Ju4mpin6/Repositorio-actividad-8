@@ -50,7 +50,7 @@ sujetos_sel = st.sidebar.multiselect("2. Sujeto obligado", sujetos, default=suje
 
 sueldo_sel = st.sidebar.slider("3. Suelfdo Neto ", float(df_orig['montoneto'].min()), float(df_orig['montoneto'].max()), (float(df_orig['montoneto'].min()), float(df_orig['montoneto'].max())))
 bruto_sel = st.sidebar.slider("4. Sueldo Bruto ", float(df_orig['montobruto'].min()), float(df_orig['montobruto'].max()), (float(df_orig['montobruto'].min()), float(df_orig['montobruto'].max())))
-cargo_search = st.sidebar.text_input("5. Buscar por Cargo", "")
+
 
 df_f = df_orig[
     (df_orig['entidadfederativa'].isin(entidades_sel)) &
@@ -59,17 +59,14 @@ df_f = df_orig[
     (df_orig['montobruto'].between(bruto_sel[0], bruto_sel[1]))
 ]
 
-if cargo_search:
-    df_f = df_f[df_f['cargo'].str.contains(cargo_search, case=False, na=False)]
-
 
 st.header("Vista de Datos Filtrados")
-st.write(f"Mostrando **{df_f.shape[0]}** registros de **{df_orig.shape[0]}** en la muestra.")
+st.write(f"Mostrando registros de  la muestra.")
 st.dataframe(df_f, use_container_width=True)
 
 st.header("Estadísticas Descriptivas")
 col1, col2, col3 = st.columns(3)
-col1.metric("Media Sueldo Neto", f"${df_f['montoneto'].mean():,.2f}", f"${df_f['montoneto'].mean() - df_orig['montoneto'].mean():,.2f} vs Orig")
+col1.metric("Media Sueldo Neto", f"${df_f['montoneto'].mean():,.2f}")
 col2.metric("Máximo Sueldo Neto", f"${df_f['montoneto'].max():,.2f}", f"${df_f['montoneto'].max() - df_orig['montoneto'].max():,.2f} vs Orig")
 col3.metric("Sueldo Bruto Promedio", f"${df_f['montobruto'].mean():,.2f}", f"${df_f['montobruto'].mean() - df_orig['montobruto'].mean():,.2f} vs Orig")
 
