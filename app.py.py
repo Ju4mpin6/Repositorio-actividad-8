@@ -44,9 +44,11 @@ st.sidebar.header("Filtros para el data set")
 
 entidades = sorted(df_orig['entidadfederativa'].dropna().unique())
 entidades_sel = st.sidebar.multiselect("1. entidad federativa", entidades, default=entidades[:3])
+
 df_temporal_entidad = df_orig[df_orig['entidadfederativa'].isin(entidades_sel)]
-sujetos = sorted(df_orig['sujetoobligado'].dropna().unique())
-sujetos_sel = st.sidebar.multiselect("2. Sujeto obligado", sujetos, default=sujetos[:5] if len(sujetos) > 5 else sujetos)
+
+sujetos = sorted(df_temporal_entidad['sujetoobligado'].dropna().unique())
+sujetos_sel = st.sidebar.multiselect("2. Sujeto obligado", sujetos, default=sujetos[:5] if len(sujetos) > 5 else sujetos, key=f"sujetos_{entidades_sel}")
 
 sueldo_sel = st.sidebar.slider("3. Suelfdo Neto ", float(df_orig['montoneto'].min()), float(df_orig['montoneto'].max()), (float(df_orig['montoneto'].min()), float(df_orig['montoneto'].max())))
 bruto_sel = st.sidebar.slider("4. Sueldo Bruto ", float(df_orig['montobruto'].min()), float(df_orig['montobruto'].max()), (float(df_orig['montobruto'].min()), float(df_orig['montobruto'].max())))
