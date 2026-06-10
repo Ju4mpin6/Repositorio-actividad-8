@@ -44,7 +44,7 @@ st.sidebar.header("Filtros para el data set")
 
 entidades = sorted(df_orig['entidadfederativa'].dropna().unique())
 entidades_sel = st.sidebar.multiselect("1. entidad federativa", entidades, default=entidades[:3])
-
+df_temporal_entidad = df_orig[df_orig['entidadfederativa'].isin(entidades_sel)]
 sujetos = sorted(df_orig['sujetoobligado'].dropna().unique())
 sujetos_sel = st.sidebar.multiselect("2. Sujeto obligado", sujetos, default=sujetos[:5] if len(sujetos) > 5 else sujetos)
 
